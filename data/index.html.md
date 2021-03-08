@@ -34,7 +34,7 @@ curl "api_endpoint_here"
 
 > Make sure to replace `EXAMPLE_API_KEY` with your API key.
 
-Pandora uses API keys to allow access to the API. You can create a new API key at our [dashboard](https://dashboard.projectpandora.xyz).
+Pandora uses API keys to allow access to the API. You can create a new API key at our [dashboard](https://platform.projectpandora.xyz).
 
 Pandora expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
