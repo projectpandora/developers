@@ -381,6 +381,58 @@ This endpoint retrieves a specific workspace.
 | SLUG      | The slug of the organization          | yes      |
 | UUID      | The uuid of the workspace to retrieve | yes      |
 
+## Update an workspace
+
+```shell
+curl -X PUT "https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/workspaces/<UUID>"
+  -H "X-Pandora-Token: EXAMPLE_API_KEY"
+  -H "Content-Type: application/json" \
+  --data '{"name":"New name"}'
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "request_id": "36b08abc-82c3-4749-86d9-ed2a043bf316",
+  "status": {
+    "code": "200"
+  },
+  "data": {
+    "id": 1,
+    "uuid": "95537d4b-3251-419f-834b-32f5h4dab85e",
+    "organization_slug": "SLUG",
+    "name": "New name",
+    "type": "domain",
+    "domain": "example.com",
+    "subnet": "",
+    "created_at": "2021-03-04T10:04:20.023968+07:00",
+    "updated_at": "0001-01-01T00:00:00Z"
+  }
+}
+```
+
+This endpoint updates a specific workspace.
+
+### HTTP Request
+
+`PUT https://api.projectpandora.xyz/organizations/<SLUG>/workspaces/<UUID>`
+
+<aside class="warning">Make sure you replace <code>SLUG</code> with the organization's slug and replace <code>UUID</code> with the workspace's uuid.</aside>
+
+### URL Parameters
+
+| Parameter | Description                         | Required |
+| --------- | ----------------------------------- | -------- |
+| SLUG      | The slug of the organization        | yes      |
+| UUID      | The uuid of the workspace to update | yes      |
+
+### Body Parameters
+
+| Parameter | Description                    | Required |
+| --------- | ------------------------------ | -------- |
+| name      | The new name for the workspace | yes      |
+
 ## Delete an workspace
 
 ```shell
@@ -415,6 +467,57 @@ This endpoint deletes a specific workspace.
 | UUID      | The uuid of the workspace to delete | yes      |
 
 # Hosts
+
+## Add new host
+
+```shell
+curl -X POST "https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/hosts"
+  -H "X-Pandora-Token: EXAMPLE_API_KEY"
+  -H "Content-Type: application/json" \
+  --data '{"workspace_uuid":"7353744b-5240-31bf-334b-85f5h4gac82e", "domain": "abc.example.com"}'
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "request_id": "36b08abc-82c3-4749-86d9-ed2a043bf316",
+  "status": {
+    "code": "200"
+  },
+  "data": {
+    "id": 1,
+    "uuid": "95537d4b-3251-419f-834b-32f5h4dab85e",
+    "organization_slug": "SLUG",
+    "type": "domain",
+    "domain": "abc.example.com",
+    "created_at": "2021-03-04T10:04:20.023968+07:00",
+    "updated_at": "0001-01-01T00:00:00Z"
+  }
+}
+```
+
+This endpoint adds a new host to a workspace.
+
+### HTTP Request
+
+`POST https://api.projectpandora.xyz/organizations/<SLUG>/hosts`
+
+<aside class="warning">Make sure you replace <code>SLUG</code> with the organization's slug.</aside>
+<aside class="warning">You only can add hosts to workspaces with type <code>domain</code>.</aside>
+
+### URL Parameters
+
+| Parameter | Description                  | Required |
+| --------- | ---------------------------- | -------- |
+| SLUG      | The slug of the organization | yes      |
+
+### Body Parameters
+
+| Parameter      | Description                 | Required |
+| -------------- | --------------------------- | -------- |
+| workspace_uuid | The workspace's uuid        | yes      |
+| domain         | The domain for the new host | yes      |
 
 ## List hosts
 
