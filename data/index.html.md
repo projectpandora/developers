@@ -1045,7 +1045,7 @@ curl "https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scans/full_mode
 
 ### HTTP Request
 
-`GET https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scans/full_mode`
+`POST https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scans/full_mode`
 
 <aside class="warning">Make sure you replace <code>SLUG</code> with the organization's slug.</aside>
 
@@ -1108,7 +1108,7 @@ curl "https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scans/quick_sca
 
 ### HTTP Request
 
-`GET https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scans/full_mode`
+`POST https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scans/full_mode`
 
 <aside class="warning">Make sure you replace <code>SLUG</code> with the organization's slug.</aside>
 
@@ -1305,6 +1305,314 @@ This scan deletes a specific scan.
 | --------- | ------------------------------ | -------- |
 | SLUG      | The slug of the organization   | yes      |
 | UUID      | The uuid of the scan to delete | yes      |
+
+# Scan schedules
+
+## Create a scheduled scan
+
+```shell
+curl "https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scanschedules" \
+  -X POST \
+  -H "X-Pandora-Token: EXAMPLE_API_KEY" \
+  -H "Content-Type: application/json" \
+  --data '{"type":"weekly","hour":01,"minute":15,"timezone":"Asia/Ho_Chi_Minh","day_of_week":1,"scan_type":"full","target_level":"workspace","target_uuid":"ac9a7189-2d18-4633-a471-gc06c99624b0"}'
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "request_id": "03c63772-a08f-4a39-9c5d-685a1d6f6bb7",
+  "status": { "code": 200 },
+  "data": {
+    "id": 2,
+    "uuid": "d8de768b-c280-4e14-8fe1-664c5b0cc016",
+    "organization_slug": "vng-corporation",
+    "type": "weekly",
+    "hour": 01,
+    "minute": 15,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "day_of_week": 1,
+    "date_of_month": 0,
+    "is_active": true,
+    "scan_type": "full",
+    "target_level": "workspace",
+    "target_uuid": "ac9a7189-2d18-4633-a471-gc06c99624b0",
+    "target": null,
+    "modules": null,
+    "signature_uuids": null,
+    "last_check": "0001-01-01T00:00:00Z",
+    "last_run": "0001-01-01T00:00:00Z",
+    "created_at": "2021-05-17T12:34:34.769778+07:00",
+    "updated_at": "0001-01-01T00:00:00Z"
+  }
+}
+```
+
+### HTTP Request
+
+`POST https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scanschedules`
+
+<aside class="warning">Make sure you replace <code>SLUG</code> with the organization's slug.</aside>
+
+### URL Parameters
+
+| Parameter | Description                  | Default | Required |
+| --------- | ---------------------------- | ------- | -------- |
+| SLUG      | The slug of the organization |         | yes      |
+
+### Body Parameters
+
+| Parameter       | Description                                    | Default | Required                   |
+| --------------- | ---------------------------------------------- | ------- | -------------------------- |
+| type            | (daily, weekly or monthly)                     |         | yes                        |
+| hour            | The hour at which scan will be executed        |         | yes                        |
+| minute          | The minute at which scan will be executed      |         | yes                        |
+| timezone        | The timezone at which scan will be executed    |         | yes                        |
+| day_of_week     | The day of week at which scan will be exective |         | no (yes in weekly)         |
+| date_of_month   | The timezone at which scan will be executed    |         | no (yes in monthly)        |
+| scan_type       | The scan's type                                |         | yes                        |
+| target_uuid     | The target's uuid                              |         | yes                        |
+| target_level    | The level of the target                        |         | yes                        |
+| modules         | List of modules and its configuration          |         | no (yes in customize scan) |
+| signature_uuids | List of signature's UUIDs to be used in scan   |         | no (yes in quick scan)     |
+
+## List scan schedules
+
+```shell
+curl "https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scanschedules&page_size=10&page=1"
+  -H "X-Pandora-Token: EXAMPLE_API_KEY"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "request_id": "36b08abc-82c3-4749-86d9-ed2a043bf316",
+  "status": {
+    "code": "200"
+  },
+  "total": 1,
+  "page_size": 10,
+  "page": 1,
+  "data": [
+    {
+      "id": 2,
+      "uuid": "d8de768b-c280-4e14-8fe1-664c5b0cc016",
+      "organization_slug": "vng-corporation",
+      "type": "weekly",
+      "hour": 01,
+      "minute": 15,
+      "timezone": "Asia/Ho_Chi_Minh",
+      "day_of_week": 1,
+      "date_of_month": 0,
+      "is_active": true,
+      "scan_type": "full",
+      "target_level": "workspace",
+      "target_uuid": "ac9a7189-2d18-4633-a471-gc06c99624b0",
+      "target": null,
+      "modules": null,
+      "signature_uuids": null,
+      "last_check": "0001-01-01T00:00:00Z",
+      "last_run": "0001-01-01T00:00:00Z",
+      "created_at": "2021-05-17T12:34:34.769778+07:00",
+      "updated_at": "0001-01-01T00:00:00Z"
+    }
+  ]
+}
+```
+
+This endpoint retrieves all scan schedules in an organization.
+
+### HTTP Request
+
+`GET https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scanschedules`
+
+<aside class="warning">Make sure you replace <code>SLUG</code> with the organization's slug.</aside>
+
+### URL Parameters
+
+| Parameter | Description                  | Default | Required |
+| --------- | ---------------------------- | ------- | -------- |
+| SLUG      | The slug of the organization |         | yes      |
+
+### Query Parameters
+
+| Parameter | Description                                 | Default | Required |
+| --------- | ------------------------------------------- | ------- | -------- |
+| page_size | The number of scans return in each request. | 10      | no       |
+| page      | The current page.                           | 1       | no       |
+
+## Get a specific scan schedule
+
+```shell
+curl "https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scans/<UUID>"
+  -H "X-Pandora-Token: EXAMPLE_API_KEY"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "request_id": "36b08abc-82c3-4749-86d9-ed2a043bf316",
+  "status": {
+    "code": "200"
+  },
+  "data": {
+    "id": 2,
+    "uuid": "d8de768b-c280-4e14-8fe1-664c5b0cc016",
+    "organization_slug": "vng-corporation",
+    "type": "weekly",
+    "hour": 01,
+    "minute": 15,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "day_of_week": 1,
+    "date_of_month": 0,
+    "is_active": true,
+    "scan_type": "full",
+    "target_level": "workspace",
+    "target_uuid": "ac9a7189-2d18-4633-a471-gc06c99624b0",
+    "target": {
+      "id": 1,
+      "uuid": "46537d4b-8251-419f-834b-32e5d4dab85e",
+      "organization_slug": "SLUG",
+      "name": "Pandora",
+      "type": "domain",
+      "domain": "projectpandora.xyz",
+      "subnet": "",
+      "created_at": "2021-03-04T11:14:31.023968+07:00",
+      "updated_at": "0001-01-01T00:00:00Z"
+    },
+    "modules": null,
+    "signature_uuids": null,
+    "last_check": "0001-01-01T00:00:00Z",
+    "last_run": "0001-01-01T00:00:00Z",
+    "created_at": "2021-05-17T12:34:34.769778+07:00",
+    "updated_at": "0001-01-01T00:00:00Z"
+  }
+}
+```
+
+This endpoint retrieves a specific schedule scan.
+
+### HTTP Request
+
+`GET https://api.projectpandora.xyz/organizations/<SLUG>/scans/<UUID>`
+
+<aside class="warning">Make sure you replace <code>SLUG</code> with the organization's slug and the <code>UUID</code> with the scan schedule's uuid.</aside>
+
+### URL Parameters
+
+| Parameter | Description                               | Required |
+| --------- | ----------------------------------------- | -------- |
+| SLUG      | The slug of the organization              | yes      |
+| UUID      | The uuid of the scan schedule to retrieve | yes      |
+
+## Update a scan schedule
+
+```shell
+curl -X PUT "https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scanschedules/<UUID>"
+  -H "X-Pandora-Token: EXAMPLE_API_KEY"
+  -H "Content-Type: application/json" \
+  --data '{"is_active":false}'
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "request_id": "36b08abc-82c3-4749-86d9-ed2a043bf316",
+  "status": {
+    "code": "200"
+  },
+  "data": {
+    "id": 2,
+    "uuid": "d8de768b-c280-4e14-8fe1-664c5b0cc016",
+    "organization_slug": "vng-corporation",
+    "type": "weekly",
+    "hour": 01,
+    "minute": 15,
+    "timezone": "Asia/Ho_Chi_Minh",
+    "day_of_week": 1,
+    "date_of_month": 0,
+    "is_active": false,
+    "scan_type": "full",
+    "target_level": "workspace",
+    "target_uuid": "ac9a7189-2d18-4633-a471-gc06c99624b0",
+    "target": {
+      "id": 1,
+      "uuid": "46537d4b-8251-419f-834b-32e5d4dab85e",
+      "organization_slug": "SLUG",
+      "name": "Pandora",
+      "type": "domain",
+      "domain": "projectpandora.xyz",
+      "subnet": "",
+      "created_at": "2021-03-04T11:14:31.023968+07:00",
+      "updated_at": "0001-01-01T00:00:00Z"
+    },
+    "modules": null,
+    "signature_uuids": null,
+    "last_check": "0001-01-01T00:00:00Z",
+    "last_run": "0001-01-01T00:00:00Z",
+    "created_at": "2021-05-17T12:34:34.769778+07:00",
+    "updated_at": "2021-05-17T13:14:02.769778+07:00"
+  }
+}
+```
+
+This endpoint updates a specific scan schedule.
+
+### HTTP Request
+
+`PUT https://api.projectpandora.xyz/organizations/<SLUG>/workspaces/<UUID>`
+
+<aside class="warning">Make sure you replace <code>SLUG</code> with the organization's slug and replace <code>UUID</code> with the workspace's uuid.</aside>
+
+### URL Parameters
+
+| Parameter | Description                         | Required |
+| --------- | ----------------------------------- | -------- |
+| SLUG      | The slug of the organization        | yes      |
+| UUID      | The uuid of the workspace to update | yes      |
+
+### Body Parameters
+
+| Parameter | Description                                   | Required |
+| --------- | --------------------------------------------- | -------- |
+| is_active | The new is_active value for the scan schedule | yes      |
+
+## Delete a scan schedule
+
+```shell
+curl -X DELETE "https://api.projectpandora.xyz/api/v1/organizations/<SLUG>/scanschedules/<UUID>"
+  -H "X-Pandora-Token: EXAMPLE_API_KEY"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "request_id": "36b08abc-82c3-4749-86d9-ed2a043bf316",
+  "status": {
+    "code": "200"
+  }
+}
+```
+
+This scan deletes a specific scan schedule.
+
+### HTTP Request
+
+`DELETE https://api.projectpandora.xyz/organizations/<SLUG>/scanschedules/<UUID>`
+
+<aside class="warning">Make sure you replace <code>SLUG</code> with the organization's slug and replace <code>UUID</code> with the scan schedule's uuid.</aside>
+
+### URL Parameters
+
+| Parameter | Description                             | Required |
+| --------- | --------------------------------------- | -------- |
+| SLUG      | The slug of the organization            | yes      |
+| UUID      | The uuid of the scan schedule to delete | yes      |
 
 # Jobs
 
